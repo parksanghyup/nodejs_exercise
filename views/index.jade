@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h2
+    a(href="/") 홈   
+  
+  if user
+     = user
+     a(href="users/logout") |  로그아웃 | 
+     a(href="post/create") 글쓰기
+     
+  else
+    a(href="/users/kakao") 카카오  |
+    a(href="users/login") 로그인  |  
+    a(href="users/register") 회원가입
+
+    
+  h2 게시물 
+  if user
+    h3
+      a(href="/post/filelist") 파일목록
+  h3
+    a(href="/board/1") 글 목록
+  
+  script(src="scripts/jquery.js")
+  script.
+    $.get('/', function() {
+      alert('hi');
+    });
+

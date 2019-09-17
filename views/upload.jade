@@ -1,0 +1,12 @@
+doctype html
+
+form(action="/post/create_process" method='POST' enctype="multipart/form-data")
+    div
+        input(type="text" name='title' placeholder='제목')
+    div
+        textarea(name="text", cols="40", rows="20" wrap='hard' placeholder='내용')
+    div    
+      input(type='file' name='userfile')
+    div
+        input(type="submit" value='작성') 
+

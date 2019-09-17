@@ -1,0 +1,37 @@
+doctype html
+html
+
+    head
+        script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+
+        script.
+            $(document).ready(function () {
+               $('.id').keyup(function () {
+                   var input_id = $('.id').val();
+                   $.ajax({
+                       url: "/users/id_check",
+                       type: "POST",
+                       data: {
+                           id: input_id
+                       },
+
+                       success: function (result) {
+                           if(result.check=='ok')
+                               $(".message").html("사용불가");
+                           else
+                               $(".message").html("사용가능");
+                       }
+                   });
+               })
+
+            });
+
+    body
+        form(action='/auth/register_process' method='post')
+            p
+                input(type='text' name='email' placeholder='email' class="id")
+                span(class='message')
+            p
+                input(type='password' name='pwd' placeholder='password')
+            p
+                input(type='submit' value='회원가입')

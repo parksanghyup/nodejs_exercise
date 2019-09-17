@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    form(action="/users/login_process", method="post")
+      div
+         input(type="text", name="id")
+      div 
+         input(type="text", name="password")
+         input(type="submit" value="로그인")
+   
+   
+   

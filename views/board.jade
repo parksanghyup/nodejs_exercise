@@ -1,0 +1,22 @@
+html
+
+head
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+
+body
+    - var i =0;
+    - var next = 1; next = parseInt(next);
+        each post in row
+           p= post.title
+    nav(aria-label='Page navigation example')
+    ul.pagination
+        li.page-item
+        - if ( page >= 1)
+            a.page-link(href=page-1) 이전
+        // page-1을 보내기
+        - for(i=1; i<length; i++)
+            li.page-item
+            a.page-link(href=i)= i
+        li.page-item
+        - if ( page <= 1)
+            a.page-link(href= page+1) 다음

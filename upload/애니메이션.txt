@@ -1,0 +1,32 @@
+n i j k   - k j i n
+
+book 
+chapter
+s -s 
+page
+s -s
+
+x
+f -f
+-x
+
+word
+x
+f -f
+-x
+s -s
+
+&a &b temp
+-temp &b &a
+phrase
+s -s
+
+x 
+f -f
+-x
+
+n i j k
+- k j i n
+
+-phrase word page chapter book
+
