@@ -27,3 +27,108 @@ script.
         });
     }
 script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDwPvj1Nl4FCjejZLQiEHQtsq-vovm5eAc&callback=initMap&region=KR' async='' defer='')
+
+style.
+    /* 바탕 배경 이미지 */
+    .pop-address-search .pop-address-search-inner { background-image: url(http://www.0000.com/img/backImg.png);}
+      /* 회사 로고 이미지 */
+      .pop-address-search .pop-address-search-inner .logo { background: url(http://www.0000.com/img/logo.png) no-repeat; background-position:center; }
+      /* 바탕 배경색상 */
+      .pop-address-search .pop-address-search-inner { background-color:#ECECEC; }
+      /* 검색창 색상 */
+      .pop-address-search .pop-address-search-inner .wrap input { background-color:#FFFFFF; }
+      /* 검색버튼 색상 */
+      .pop-address-search .pop-address-search-inner .wrap { background-color:#FFFFFF; }
+      /* 본문 배경색(홀수) */
+      .pop-address-search .pop-address-search-inner .result table.data-col tbody tr:nth-child(odd) td {background:#FFFFFF}
+      /* 본문 배경색(짝수) */
+      .pop-address-search .pop-address-search-inner .result table.data-col tbody tr:nth-child(even) td {background:#FFFFFF}
+
+script(src='http://code.jquery.com/jquery-1.11.2.min.js')
+script(src='http://code.jquery.com/jquery-migrate-1.2.1.min.js')
+
+script('javascript').
+    function getAddrLoc() {
+            if(!checkSearchWord(document.form.keyword)) {
+                    return;
+                }
+        }
+        function getAddr() {
+        $.ajax({
+            url:'http://www.juso.go.kr/addrlink/addrLinkApiJsonp.do',
+            type:'post',
+            data:$('#form').serialize(),
+            dataType: 'jsonp',
+            success:function (jsonStr) {
+                $('#list').html('');
+                var errCode = jsonStr.results.common.errorCode;
+                var errDesc = jsonStr.results.common.errorMessage;
+                if(errCode != '0') {
+                    alert(errCode+'='+errDesc);
+                } else {
+                    if(jsonStr != null) {
+                        makeListJson(jsonStr);
+                    }
+                }
+            }
+            ,error:function (xhr,status,error) {
+                alert('에러');
+            }
+        });
+    }
+    
+    function makeListJson(jsonStr) {
+        var htmlStr = '';
+        htmlStr += 'table';
+        $(jsonStr.results.juso).each(function () {
+            htmlStr += "<tr>";
+            htmlStr += "<td>" + this.roadAddr + "</td>";        //전체도로명주소()
+            // htmlStr += "<td>" + this.roadAddrPart1 + "</td>";   //도로명주소 ()뺀거
+            // htmlStr += "<td>" + this.roadAddrPart2 + "</td>";   // ()안에있는거
+            htmlStr += "<td>" + this.jibunAddr + "</td>";       // 지번주소
+            // htmlStr += "<td>" + this.engAddr + "</td>";         // 도로명주소영문
+            htmlStr += "<td>" + this.zipNo + "</td>";           // 우편번호
+            // htmlStr += "<td>" + this.admCd + "</td>";           // 고객입력상세주소
+            htmlStr += "<td>" + this.rnMgtSn + "</td>";         // 행정구역코드
+            htmlStr += "<td>" + this.bdMgtSn + "</td>";         // 도로명코드
+            // htmlStr += "<td>" + this.detBdNmList + "</td>";     // 건물관리번호
+            // htmlStr += "<td>" + this.bdNm + "</td>";            // 상세건물명
+            // htmlStr += "<td>" + this.bdKdcd + "</td>";          // 공동주택여부 1:공동주택 0: 비공동주택
+            // htmlStr += "<td>" + this.siNm + "</td>";            // 시/도 명
+            // htmlStr += "<td>" + this.sggNm + "</td>";           // 시군구
+            // htmlStr += "<td>" + this.emdNm + "</td>";           // 읍면동
+            // htmlStr += "<td>" + this.liNm + "</td>";            // 법정리명
+            // htmlStr += "<td>" + this.rn + "</td>";              // 도로명
+            // htmlStr += "<td>" + this.udrtYn + "</td>";          // 지하여부
+            htmlStr += "<td>" + this.buldMnnm + "</td>";        // 건물본번
+            htmlStr += "<td>" + this.buldSlno + "</td>";        // 건물 부번
+            // htmlStr += "<td>" + this.mtYn + "</td>";            // 산여부 0:대지 1: 산
+            // htmlStr += "<td>" + this.lnbrMnnm + "</td>";        // 지번본번 번지
+            // htmlStr += "<td>" + this.lnbrSlno + "</td>";        // 지번부번 호
+            // htmlStr += "<td>" + this.emdNo + "</td>";           // 읍면동일련번호
+            htmlStr += "</tr>";
+        });
+        htmlStr += '</table>';
+        $('#list').html(htmlStr);
+    }
+    
+    function enterSearch() {
+        var evt_code = (window.netscape) ? ev.which:event.keyCode;
+        if(evt_code == 13) {
+            event.keyCode = 0;
+            getAddr();
+            }
+    }
+
+
+title Insert title here
+form#form(name='form' method='post')
+    input(type='text' name='currentPage' value='1')
+    input(type='text' name='countPerPage' value='10')
+    input(type='text' name='resultType' value='json')
+    input(type='text' name='confmKey' value='devU01TX0FVVEgyMDE5MDkxODEwMzgzNTEwOTAyODc=')
+    // 요청 변수 설정 (승인키)
+    input(type='text' name='keyword' value='' onkeydown='enterSearch();')
+    // 요청 변수 설정 (키워드)
+    input(type='button' onclick='getAddr();' value='주소검색하기')
+    div#list
